@@ -66,7 +66,16 @@ public class PartByColor {
 				// 像素点像素值
 				int point = pointImg[i][j];
 
-				// 上下左右,
+				// 上下左右, 进行扩展
+				// 1.如果非上方边界, 上方像素点也未分配色块, 向上扩展
+				// 2.如果非下方边界, 下方像素点也未分配色块, 向下扩展
+				// 3.如果非左方边界, 左方像素点也未分配色块, 向左扩展
+				// 4.如果非右方边界, 右方像素点也未分配色块, 向右扩展
+				boolean hasNewPoint = true;
+				while (hasNewPoint) {
+					hasNewPoint = false;
+					if(isLeftBorder())
+				}
 			}
 		}
 
