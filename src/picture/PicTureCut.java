@@ -6,9 +6,10 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-public class GaoSiMohu {
+public class PicTureCut {
 
 	static String src = "C:\\Users\\misez\\Desktop\\图片\\辽B5942B.jpg";
+	// static String src = "C:\\Users\\misez\\Desktop\\图片\\高斯模糊\\辽B5942B.jpg";
 
 	public static void main(String[] args) {
 
@@ -41,13 +42,20 @@ public class GaoSiMohu {
 		}
 
 		PicTure picture = new PicTure(pointImg);
-		String tmp = "C:\\Users\\misez\\Desktop\\图片\\高斯模糊\\" + file.getName();
+		String tmp = "C:\\Users\\misez\\Desktop\\图片\\高斯模糊\\dst\\" + file.getName();
 		// picture.saveNewPicture(tmp);
 		try {
 			// 制作高斯模糊二位数组
 			// picture.saveGaoSiMohuPicture(tmp);
+			// 制作中值滤波二位数组
+			// picture.saveMedianPicture(tmp);
 			// 边缘检测
-			picture.saveGaoSiMohuPicture(tmp);
+			// picture.saveSharpPicture(tmp);
+			// 二值化
+			// picture.saveTwoValue(tmp);
+			// 进行膨胀和腐蚀
+			picture.saveExpendAndCorrode(tmp);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
