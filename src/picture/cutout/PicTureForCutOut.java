@@ -1,4 +1,4 @@
-package picture;
+package picture.cutout;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -12,12 +12,12 @@ import javax.imageio.ImageIO;
 
 import util.MathUtil;
 
-public class PicTure {
+public class PicTureForCutOut {
 
 	// 原图像
 	private int[][] pointImg;
 
-	public PicTure(int[][] pointImg) {
+	public PicTureForCutOut(int[][] pointImg) {
 		this.pointImg = pointImg;
 	}
 
@@ -331,24 +331,33 @@ public class PicTure {
 	// 二值化
 	public boolean saveTwoValue(String tmp) throws Exception {
 
+		// int[][] huidu = getHuiDuPic();
+		//
+		// int[][] blur = getBlurPic(huidu, 1);
+		//
+		// // 中值滤波
+		// int[][] median = getMedianPic(blur);
+		//
+		// // 锐化窗口
+		// BigDecimal[][] sharpWindow = getSharpWindow();
+		// int[][] juanJi = getJuanJiPic(median, sharpWindow);
+		//
+		// // 二值化
+		// int[][] erzhihua = getErzhihuaPic(juanJi);
+		//
+		// return saveNewPicture(tmp, erzhihua);
+
 		int[][] huidu = getHuiDuPic();
-
-		int[][] blur = getBlurPic(huidu, 1);
-
-		int[][] median = getMedianPic(blur);
-
-		// 锐化窗口
-		BigDecimal[][] sharpWindow = getSharpWindow();
-		int[][] juanJi = getJuanJiPic(median, sharpWindow);
-
 		// 二值化
-		int[][] erzhihua = getErzhihuaPic(juanJi);
+		int[][] erzhihua = getErzhihuaPic(huidu);
 
 		return saveNewPicture(tmp, erzhihua);
 	}
 
 	// 图像二值化
 	private int[][] getErzhihuaPic(int[][] src) {
+
+		int erzhiLine = 120;
 
 		int[][] dst = new int[src.length][src[0].length];
 
@@ -360,7 +369,7 @@ public class PicTure {
 
 				int b = pixel & 0xff;
 
-				if (b > 150)
+				if (b > erzhiLine)
 					dst[x][y] = (a << 24) + (255 << 16) + (255 << 8) + 255;
 				else
 					dst[x][y] = a << 24;
@@ -370,7 +379,7 @@ public class PicTure {
 		return dst;
 	}
 
-	public boolean saveExpendAndCorrode(String tmp) throws Exception {
+	public boolean saveExpendAndCorrodePicture(String tmp) throws Exception {
 
 		int[][] huidu = getHuiDuPic();
 
@@ -391,14 +400,14 @@ public class PicTure {
 		return saveNewPicture(tmp, expendAndCorrode);
 	}
 
-	// 扩展和腐蚀
+	// 膨胀和腐蚀
 	private int[][] getExpendAndCorrodePic(int[][] src) {
 
 		int radius = 1;
 
 		// 腐蚀
 		int[][] dst = corrode(src, radius);
-		// 扩展
+		// 膨胀
 		dst = expend(dst, radius);
 
 		return dst;
@@ -421,9 +430,9 @@ public class PicTure {
 
 				int a = (src[0][0] & 0Xff000000) >> 24;
 
-				boolean expend = false;
+				boolean corrode = false;
 				for (int windowX = 0; windowX < window.length; windowX++) {
-					if (expend)
+					if (corrode)
 						break;
 					for (int windowY = 0; windowY < window[windowX].length; windowY++) {
 
@@ -435,12 +444,12 @@ public class PicTure {
 						int b = pixel & 0Xff;
 
 						if (b == 255) {
-							expend = true;
+							corrode = true;
 							break;
 						}
 					}
 				}
-				if (expend)
+				if (corrode)
 					dst[x][y] = (a << 24) + (0 << 16) + (0 << 8) + 0;
 				else
 					dst[x][y] = (a << 24) + (255 << 16) + (255 << 8) + 255;
@@ -450,7 +459,7 @@ public class PicTure {
 		return dst;
 	}
 
-	// 扩展
+	// 膨胀
 	private int[][] expend(int[][] src, int radius) {
 
 		int[][] dst = new int[src.length][src[0].length];
@@ -503,4 +512,182 @@ public class PicTure {
 		return new int[WindowLength][WindowLength];
 	}
 
+	// 查找轮廓
+	public boolean saveOutLinePicture(String tmp) throws Exception {
+
+		// int[][] huidu = getHuiDuPic();
+		//
+		// int[][] blur = getBlurPic(huidu, 1);
+		//
+		// int[][] median = getMedianPic(blur);
+		//
+		// // 锐化窗口
+		// BigDecimal[][] sharpWindow = getSharpWindow();
+		// int[][] juanJi = getJuanJiPic(median, sharpWindow);
+		//
+		// // 二值化
+		// int[][] erzhihua = getErzhihuaPic(juanJi);
+		//
+		// // 扩展和腐蚀
+		// int[][] expendAndCorrode = getExpendAndCorrodePic(erzhihua);
+		//
+		// // 查找轮廓
+		// int[][] outLine = getOutLinePic(expendAndCorrode);
+		//
+		// return saveNewPicture(tmp, outLine);
+
+		int[][] huidu = getHuiDuPic();
+		// 二值化
+		int[][] erzhihua = getErzhihuaPic(huidu);
+		// 扩展和腐蚀
+		int[][] expendAndCorrode = getExpendAndCorrodePic(erzhihua);
+		// 查找轮廓
+		int[][] outLine = getOutLinePic(expendAndCorrode);
+
+		return saveNewPicture(tmp, erzhihua);
+	}
+
+	// 查找轮廓
+	private int[][] getOutLinePic(int[][] src) {
+
+		// 1.轮廓提取法
+		// 2.边界跟踪法
+		// 3.区域增长法
+		// 4.区域分裂合并法
+
+		// 暂时只使用 轮廓提取法
+
+		int[][] dst = new int[src.length][src[0].length];
+
+		int pixel00 = src[0][0];
+		int a = (pixel00 & 0Xff000000) >> 24;
+		int white = (a << 24) + (255 << 16) + (255 << 8) + 255;
+		int black = (a << 24);
+
+		for (int x = 0; x < src.length; x++) {
+			for (int y = 0; y < src[x].length; y++) {
+
+				int pixel = src[x][y];
+
+				// int a = (pixel & 0Xff000000) >> 24;
+				// int r = (pixel&0Xff0000) >> 16;
+				// int g = (pixel&0Xff00) >> 8;
+				// int b = pixel & 0Xff;
+
+				if (pixel == white) {
+					dst[x][y] = pixel;
+					continue;
+				}
+
+				int leftX = x - 1;
+				int rightX = x + 1;
+				int upY = y + 1;
+				int downY = y - 1;
+
+				boolean isBlack_lea = true;
+
+				if (leftX > 0 && upY < src[x].length) {
+					int left_up = src[leftX][upY];
+					isBlack_lea = isBlack_lea && (left_up == black);
+				}
+
+				if (leftX > 0) {
+					int left = src[leftX][y];
+					isBlack_lea = isBlack_lea && (left == black);
+				}
+
+				if (leftX > 0 && downY > 0) {
+					int left_down = src[leftX][downY];
+					isBlack_lea = isBlack_lea && (left_down == black);
+				}
+
+				if (upY < src[x].length) {
+					int up = src[x][upY];
+					isBlack_lea = isBlack_lea && (up == black);
+				}
+
+				if (downY > 0) {
+					int down = src[x][downY];
+					isBlack_lea = isBlack_lea && (down == black);
+				}
+
+				if (rightX < src.length && upY < src[x].length) {
+					int right_up = src[rightX][upY];
+					isBlack_lea = isBlack_lea && (right_up == black);
+				}
+
+				if (rightX < src.length) {
+					int right = src[rightX][y];
+					isBlack_lea = isBlack_lea && (right == black);
+				}
+
+				if (rightX < src.length && downY > 0) {
+					int right_down = src[rightX][downY];
+					isBlack_lea = isBlack_lea && (right_down == black);
+				}
+
+				if (isBlack_lea) {
+					dst[x][y] = white;
+				}
+			}
+		}
+
+		return dst;
+	}
+
+	public static void main(String[] args) {
+
+		String src = "C:\\Users\\misez\\Desktop\\图片\\晋000888.jpg";
+		// String src = "C:\\Users\\misez\\Desktop\\图片\\辽B5942B.jpg";
+		// String src = "C:\\Users\\misez\\Desktop\\图片\\鲁B2N506.jpeg";
+		File file = new File(src);
+
+		BufferedImage bufferedImage = null;
+		try {
+			bufferedImage = ImageIO.read(file);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return;
+		}
+
+		int width = bufferedImage.getWidth();
+		int height = bufferedImage.getHeight();
+
+		System.out.println("width:" + width);
+		System.out.println("height:" + height);
+
+		int minX = bufferedImage.getMinX();
+		int minY = bufferedImage.getMinY();
+
+		int[][] pointImg = new int[width][height];
+		for (int x = minX; x < width; x++) {
+			for (int y = minY; y < height; y++) {
+				// 像素点
+				int pixel = bufferedImage.getRGB(x, y);
+				pointImg[x][y] = pixel;
+			}
+		}
+
+		String tmp = "C:\\Users\\misez\\Desktop\\图片\\高斯模糊\\dst\\" + file.getName();
+		PicTureForCutOut picture = new PicTureForCutOut(pointImg);
+		// picture.saveNewPicture(tmp);
+		try {
+			// 制作高斯模糊二位数组
+			// picture.saveGaoSiMohuPicture(tmp);
+			// 制作中值滤波二位数组
+			// picture.saveMedianPicture(tmp);
+			// 边缘检测
+			// picture.saveSharpPicture(tmp);
+			// 二值化
+			// picture.saveTwoValue(tmp);
+			// 进行膨胀和腐蚀
+			// picture.saveExpendAndCorrodePicture(tmp);
+			// 查找轮廓
+			picture.saveOutLinePicture(tmp);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
 }

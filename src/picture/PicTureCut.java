@@ -3,13 +3,16 @@ package picture;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import picture.cutout.PictureForPart;
+import picture.cutout.part.Part;
+
 public class PicTureCut {
 
-	static String src = "C:\\Users\\misez\\Desktop\\图片\\辽B5942B.jpg";
-	// static String src = "C:\\Users\\misez\\Desktop\\图片\\高斯模糊\\辽B5942B.jpg";
+	static String src = "C:\\Users\\misez\\Desktop\\图片\\part\\辽B5942B.jpg";
 
 	public static void main(String[] args) {
 
@@ -23,41 +26,14 @@ public class PicTureCut {
 			return;
 		}
 
-		int width = bufferedImage.getWidth();
-		int height = bufferedImage.getHeight();
+		PictureForPart pictureForPart = new PictureForPart();
+		pictureForPart.initMatrix(bufferedImage);
 
-		System.out.println("width:" + width);
-		System.out.println("height:" + height);
+		// 按照颜色渐变幅度进行图片分块
+		int sechayu = 10;
+		List<Part> partList = pictureForPart.partByRGBSeCha(sechayu);
 
-		int minX = bufferedImage.getMinX();
-		int minY = bufferedImage.getMinY();
-
-		int[][] pointImg = new int[width][height];
-		for (int x = minX; x < width; x++) {
-			for (int y = minY; y < height; y++) {
-				// 像素点
-				int pixel = bufferedImage.getRGB(x, y);
-				pointImg[x][y] = pixel;
-			}
-		}
-
-		PicTure picture = new PicTure(pointImg);
-		String tmp = "C:\\Users\\misez\\Desktop\\图片\\高斯模糊\\dst\\" + file.getName();
-		// picture.saveNewPicture(tmp);
-		try {
-			// 制作高斯模糊二位数组
-			// picture.saveGaoSiMohuPicture(tmp);
-			// 制作中值滤波二位数组
-			// picture.saveMedianPicture(tmp);
-			// 边缘检测
-			// picture.saveSharpPicture(tmp);
-			// 二值化
-			// picture.saveTwoValue(tmp);
-			// 进行膨胀和腐蚀
-			picture.saveExpendAndCorrode(tmp);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		System.out.println(partList.size());
 	}
+
 }

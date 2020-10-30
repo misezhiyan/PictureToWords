@@ -3,22 +3,54 @@ package test;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
 import log.Log;
 
 public class Test {
+
 	public static void main(String[] args) {
 
 		// 查看图片rgb 数值与 r, g, b 数值
-		checkRGB();
+		// checkRGB();
 
 		// 查看二进制运算
 		// checkBinary();
 
 		// 查看二位数组
 		// checkErweiArr();
+
+		// 测试位运算
+		// weiYunSuan();
+
+		// iterator
+		iterator();
+	}
+
+	private static void iterator() {
+
+		List<String> list = new ArrayList<String>();
+		list.add("a");
+		list.add("b");
+
+		Iterator<String> iterator = list.iterator();
+		while (iterator.hasNext()) {
+			String next = iterator.next();
+			System.out.println(next);
+			list.add("c");
+		}
+	}
+
+	private static void weiYunSuan() {
+		int a = 255;
+		// int b = 255;
+		int b = 0;
+		System.out.println(a & b);
+		System.out.println(a | b);
 	}
 
 	private static void checkRGB() {
