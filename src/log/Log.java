@@ -7,7 +7,7 @@ import util.FileUtil;
 public class Log {
 
 	private String debug = "";
-	private String logFilePath = "C:\\Users\\misez\\Desktop\\图片\\debug.log";
+	private String logFilePath = "C:\\Users\\kimmy\\Desktop\\图像识别\\debug.log";
 
 	public void debug(Object log) {
 		if (log.getClass() == String.class) {

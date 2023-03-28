@@ -5,17 +5,24 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import javax.imageio.ImageIO;
 
 import log.Log;
+import util.PicUtil;
 
 public class Main {
 
-	static String src = "C:\\Users\\misez\\Desktop\\图片\\辽B5942B.jpg";
+	// static String src = "C:\\Users\\misez\\Desktop\\图片\\辽B5942B.jpg";
 	static String cut = "C:\\Users\\misez\\Desktop\\图片\\辽B5942B_CUT.jpg";
 	static String cut2 = "C:\\Users\\misez\\Desktop\\图片\\辽B5942B_CUT51.jpg";
 	static String cut3 = "C:\\Users\\misez\\Desktop\\图片\\辽B5942B_CUT247.jpg";
+
+
+	static String src = "C:\\Users\\kimmy\\Desktop\\图像识别\\识别.jpg";
+	static String outFileName = "C:\\Users\\kimmy\\Desktop\\图像识别\\识别\\" + new SimpleDateFormat("yyyyMMddHHmmsss").format(Calendar.getInstance().getTime()) + ".jpg";
 
 	public static void main(String[] args) throws IOException {
 
@@ -42,8 +49,8 @@ public class Main {
 		getLocation(bufferedImage, width, height);
 
 		BufferedImage bufferedImage0 = bufferedImage.getSubimage(68, 190, 413, 170);
-		OutputStream output = new FileOutputStream(new File(cut));
-		ImageIO.write(bufferedImage0, "jpg", output);
+		PicUtil.saveImgToFile(bufferedImage0, outFileName);
+
 
 		// BufferedImage bufferedImage2 = bufferedImage.getSubimage(0, 0, width, 51);
 		// OutputStream output2 = new FileOutputStream(new File(cut2));
