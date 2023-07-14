@@ -139,20 +139,16 @@ public class PicTureForCutOut {
 				BigDecimal rSum = new BigDecimal(0), gSum = new BigDecimal(0), bSum = new BigDecimal(0);
 				for (int winY = 0; winY < juanjiWindow.length; winY++) {
 					for (int winX = 0; winX < juanjiWindow[winY].length; winX++) {
-
 						// 实际坐标
 						int realX = x - windowRadius + winX;
 						int realY = y - windowRadius + winY;
-
 						// 像素点
 						int pixelXY = src[realX][realY];
 						// 权重
 						BigDecimal quanzhong = juanjiWindow[winX][winY];
-
 						int rXY = (pixelXY & 0xff0000) >> 16;
 						int gXY = (pixelXY & 0xff00) >> 8;
 						int bXY = pixelXY & 0xff;
-
 						rSum = rSum.add(quanzhong.multiply(new BigDecimal(rXY)));
 						gSum = gSum.add(quanzhong.multiply(new BigDecimal(gXY)));
 						bSum = bSum.add(quanzhong.multiply(new BigDecimal(bXY)));
@@ -320,11 +316,15 @@ public class PicTureForCutOut {
 		return arr[arr.length >> 1];
 	}
 
-	// 中值滤波取模窗口
+	/**
+	 * @description: 中值滤波取模窗口
+	 * @author: liyq
+	 * @createtime: 2023-03-30 11:37:02
+	 * @param: radius
+	 * @return int[][]
+	 */
 	private int[][] getMedianWindow(int radius) {
-
 		int WindowLength = (radius << 1) + 1;
-
 		return new int[WindowLength][WindowLength];
 	}
 

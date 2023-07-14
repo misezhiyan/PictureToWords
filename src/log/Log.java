@@ -12,6 +12,7 @@ public class Log {
 	public void debug(Object log) {
 		if (log.getClass() == String.class) {
 			debug += (String) log + "\r\n";
+			System.out.println(log);
 		} else {
 			debug += log.toString() + "\r\n";
 		}

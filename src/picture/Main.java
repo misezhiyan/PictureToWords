@@ -21,8 +21,8 @@ public class Main {
 	static String cut3 = "C:\\Users\\misez\\Desktop\\图片\\辽B5942B_CUT247.jpg";
 
 
-	static String src = "C:\\Users\\kimmy\\Desktop\\图像识别\\识别.jpg";
-	static String outFileName = "C:\\Users\\kimmy\\Desktop\\图像识别\\识别\\" + new SimpleDateFormat("yyyyMMddHHmmsss").format(Calendar.getInstance().getTime()) + ".jpg";
+	static String src = "C:\\Users\\kimmy\\Desktop\\图像识别\\纠偏.jpg";
+	static String outFileName = "C:\\Users\\kimmy\\Desktop\\图像识别\\纠偏\\" + new SimpleDateFormat("yyyyMMddHHmmsss").format(Calendar.getInstance().getTime()) + ".jpg";
 
 	public static void main(String[] args) throws IOException {
 
@@ -46,7 +46,7 @@ public class Main {
 		log.debug("高:" + height);
 
 		// 查找区域
-		getLocation(bufferedImage, width, height);
+		// getLocation(bufferedImage, width, height);
 
 		BufferedImage bufferedImage0 = bufferedImage.getSubimage(68, 190, 413, 170);
 		PicUtil.saveImgToFile(bufferedImage0, outFileName);
@@ -115,11 +115,11 @@ public class Main {
 							break;
 						}
 						yes = true;
+						if (yes) {
+							log.debug("坐标:(" + x + ", " + y + ")");
+						}
 					}
 
-					if (yes) {
-						log.debug("坐标:(" + x + ", " + y + ")");
-					}
 				}
 			}
 		}

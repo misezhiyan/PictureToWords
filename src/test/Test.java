@@ -16,7 +16,7 @@ public class Test {
 	public static void main(String[] args) {
 
 		// 查看图片rgb 数值与 r, g, b 数值
-		// checkRGB();
+		checkRGB();
 
 		// 查看二进制运算
 		// checkBinary();
@@ -28,7 +28,7 @@ public class Test {
 		// weiYunSuan();
 
 		// iterator
-		iterator();
+		// iterator();
 	}
 
 	private static void iterator() {
@@ -55,7 +55,7 @@ public class Test {
 
 	private static void checkRGB() {
 
-		String src = "C:\\Users\\misez\\Desktop\\图片\\辽B5942B.jpg";
+		String src = "C:\\Users\\kimmy\\Desktop\\图像识别\\识别.jpg";
 
 		File file = new File(src);
 
